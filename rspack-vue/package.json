@@ -1,0 +1,10 @@
+{
+  "packageManager": "pnpm@10.1.1",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo watch dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  }
+}

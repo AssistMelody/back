@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # 数据库配置
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_DATABASE=n8n_db
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_USER=n8n_user
+      - DB_POSTGRESDB_PASSWORD=UyuqZNwxgU
+      # 时区配置（关键设置）
+      - TZ=Asia/Hong_Kong  # 设置容器时区为香港时间（UTC+8）
+      - N8N_TIMZONE=Asia/Hong_Kong  # 确保n8n内部日志使用香港时间
+
+      # 安全认证
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=UyuqZNwxgU
+    volumes:
+      - n8n_data:/home/node/.n8n
+      # 挂载本地时区文件（备用方案）
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - postgres
+    networks:
+     acowbo_network:
+      name: acowbo_network
+      driver: bridge
